@@ -1,0 +1,31 @@
+body,
+html {
+  height: 100%;
+  margin: 0;
+
+  background-image: url("mountain.png");
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+section {
+    position: relative;
+    height: 100%;
+  display: flex;
+  justify-content: center;
+  top: 20%;
+}
+
+section div {
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  width: 50%;
+  height: 35%;
+}
