@@ -13,19 +13,76 @@ html {
   background-size: cover;
 }
 
-section {
-    position: relative;
-    height: 100%;
+main {
+  position: relative;
+  height: 100%;
   display: flex;
   justify-content: center;
-  top: 20%;
 }
 
-section div {
+main .blured {
+  margin-top: 10%;
   width: 100%;
   padding: 10px;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(5px);
   width: 50%;
   height: 35%;
+  border-radius: 15px;
+}
+
+.icon {
+  height: 75px;
+  width: 75px;
+}
+
+#search-button {
+  background-color: #007bff;
+  border: none;
+  border-radius: 70%;
+  color: #fff;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+
+  height: 35px;
+  width: 35px;
+  display: flex;
+}
+
+#search-icon::before {
+  position: absolute;
+  content: "\f002";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin: auto;
+}
+
+ul {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  padding: 0;
+}
+li {
+  display: block;
+}
+
+.mainCity {
+  display: flex;
+
+  align-items: center;
+  flex-direction: column;
+}
+
+nav {
+  gap: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+input {
+  border-radius: 10px;
+  border: none;
+  background-color:rgb(231, 221, 243);
 }
