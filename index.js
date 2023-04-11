@@ -2,6 +2,9 @@ const KEY = "3fd0c7ed22064a99a40104429230704 ";
 
 const APIbyLatLong = async (lat, long) => {
   try {
+    const position = await getLocation();
+    long = position.coords.longitude;
+    lat = position.coords.latitude;
     fetch(
       `https://api.weatherapi.com/v1/current.json?key=${KEY}&q=${lat},${long}&aqi=no`
     )
@@ -66,13 +69,12 @@ const APIForecast = (city) => {
 };
 
 function windowLoad() {
-  let long;
-  let lat;
   window.addEventListener("load", async () => {
-    const position = await getLocation();
-    long = position.coords.longitude;
-    lat = position.coords.latitude;
+    let long;
+    let lat;
 
+
+    
     APIbyLatLong(lat, long);
     showList();
   });
