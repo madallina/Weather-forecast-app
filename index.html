@@ -4,31 +4,47 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
-    <title>Document</title>
+
+    <title>Weather App</title>
     <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/media-query.css" />
   </head>
   <body>
     <main>
       <div class="blured">
+
         <nav>
-          <input type="text" placeholder="Enter city name" id="search-input" />
-          <button id="search-button">
-            <div id="search-icon"></div>
+          <input type="text" placeholder="Enter city name" id="search__input" />
+          <button id="search__button">
+            <div id="search__icon"></div>
           </button>
         </nav>
-        <div class="mainCity">
-          <div class="city"></div>
-          <div class="temp"></div>
+
+        <section class="main__city">
+          <h3 class="city"></h3>
+          <h1 class="temp"></h1>
           <img class="icon" src="" alt="" />
-        </div>
+        </section>
 
         <ul class="forecast"></ul>
       </div>
+
+      <div class="fav__container">
+        <input type="text" class="fav__input" placeholder="Favorite City" />
+        <button class="fav__add" onclick="addStringToArray()"></button>
+      </div>
+
+      <ul id="list"></ul>
     </main>
+
+    <aside onclick="changeTheme()" class="toggleIcon">
+      <i class="fas fa-moon"></i>
+    </aside>
 
     <script src="/index.js"></script>
   </body>

@@ -1,29 +1,46 @@
-body,
 html {
   height: 100%;
+}
+body {
   margin: 0;
+  color: black;
 
-  background-image: url("mountain.png");
-  /* Full height */
-  height: 100%;
+  background-image: url("/assets/mountain.png");
 
-  /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+input::first-letter {
+  text-transform: capitalize;
+}
+
 main {
   position: relative;
-  height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+}
+
+#search__input {
+  width: 265px;
 }
 
 main .blured {
   margin-top: 10%;
   width: 100%;
-  padding: 10px;
+  padding: 20px;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(5px);
   width: 50%;
@@ -32,14 +49,14 @@ main .blured {
 }
 
 .icon {
-  height: 75px;
-  width: 75px;
+  height: 85px;
+  width: 85px;
 }
 
-#search-button {
+#search__button {
   background-color: #007bff;
   border: none;
-  border-radius: 70%;
+  border-radius: 30px;
   color: #fff;
   padding: 10px;
   font-size: 16px;
@@ -50,7 +67,11 @@ main .blured {
   display: flex;
 }
 
-#search-icon::before {
+.addCity {
+  width: 180px;
+}
+
+#search__icon::before {
   position: absolute;
   content: "\f002";
   font-family: "Font Awesome 5 Free";
@@ -60,15 +81,18 @@ main .blured {
 
 ul {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   justify-content: center;
   padding: 0;
 }
 li {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.mainCity {
+.main__city {
+  margin-top: 25px;
   display: flex;
 
   align-items: center;
@@ -84,5 +108,98 @@ nav {
 input {
   border-radius: 10px;
   border: none;
-  background-color:rgb(231, 221, 243);
+  background-color: rgb(231, 221, 243);
+}
+
+.fav__container {
+  display: flex;
+  margin-top: 25px;
+  gap: 10px;
+}
+
+.fav__input {
+  width: 265px;
+  height: 35px;
+}
+
+::placeholder {
+  text-align: center;
+}
+
+.fav__add {
+  background-color: #007bff;
+  border-radius: 30px;
+  height: 35px;
+  width: 35px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fav__add::before {
+  color: white;
+  position: absolute;
+  content: "\f067";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin: auto;
+}
+
+.delete__button::before {
+  content: "\f00d";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+  margin: auto;
+  cursor: pointer;
+  color: purple;
+}
+
+.fav__list {
+  height: 45px;
+  width: 95px;
+  border: 1px solid purple;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+}
+
+.fav__city {
+  margin-top: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 85px;
+  color: rgb(0, 0, 0);
+}
+
+.fav__city--dark {
+  color: rgb(255, 255, 255);
+}
+
+.dark {
+  background-color: black;
+
+  color: white;
+}
+
+aside {
+  position: fixed;
+  top: 25px;
+  right: 35px;
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  border: 1px solid gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.body--dark {
+  background-image: url("/assets/mountains-night.png");
+  color: white;
+}
+
+.fas {
+  font-size: 30px;
 }

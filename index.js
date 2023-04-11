@@ -1,96 +1,200 @@
 const KEY = "3fd0c7ed22064a99a40104429230704 ";
 
-const API = (lat, long) => {
-  return `https://api.weatherapi.com/v1/current.json?key=${KEY}&q=${lat},${long}&aqi=no
-    `;
-};
-const APIbyCity = (city) => {
-  return `http://api.weatherapi.com/v1/current.json?key=${KEY}&q=${city}&aqi=no`;
-};
-
-const APIForecast = (city) => {
-  return `http://api.weatherapi.com/v1/forecast.json?key=${KEY}&q=${city}&days=5&aqi=no&alerts=no
-  `;
-};
-
-window.addEventListener("load", () => {
-  let long;
-  let lat;
-
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      long = pos.coords.longitude;
-      lat = pos.coords.latitude;
-
-      fetch(API(lat, long))
-        .then((res) => {
-          return res.json();
-        })
-        .then((dataStore) => {
-          document.querySelector(".temp").innerHTML = JSON.stringify(
-            dataStore.current.temp_c
-          );
-
-
-          document.querySelector(".city").innerHTML = dataStore.location.name;
-
-          document.querySelector(".icon").src =
-            dataStore.current.condition.icon;
-
-          let cityApi = dataStore.location.name;
-
-          demo(cityApi);
-        });
-    });
+const APIbyLatLong = async (lat, long) => {
+  try {
+    fetch(
+      `https://api.weatherapi.com/v1/current.json?key=${KEY}&q=${lat},${long}&aqi=no`
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((dataStore) => {
+        displayOnFirstRun(dataStore);
+      });
+  } catch (error) {
+    fetch(APIbyCity("Budapest"))
+      .then((res) => {
+        return res.json();
+      })
+      .then((dataStore) => {
+        displayOnFirstRun(dataStore);
+      });
   }
-});
+};
 
-const searchButton = document.getElementById("search-button");
-const searchInput = document.getElementById("search-input");
-
-searchButton.addEventListener("click", () => {
-  const query = searchInput.value;
-  fetch(APIbyCity(query))
+const APIbyCity = (city) => {
+  fetch(`http://api.weatherapi.com/v1/current.json?key=${KEY}&q=${city}&aqi=no`)
     .then((response) => response.json())
     .then((dataStore) => {
-      // Clear existing search results
       searchInput.value = "";
-      document.querySelector(".temp").innerHTML = JSON.stringify(
-        dataStore.current.temp_c
-      );
+      document.querySelector(".temp").innerHTML =
+        mathRound(JSON.stringify(dataStore.current.temp_c)) + "℃";
 
       document.querySelector(".city").innerHTML = dataStore.location.name;
 
       document.querySelector(".icon").src = dataStore.current.condition.icon;
-      demo(dataStore.location.name);
+      APIForecast(dataStore.location.name);
     });
-});
+};
 
-function demo(cityApi) {
-  fetch(APIForecast(cityApi))
+const APIForecast = (city) => {
+  fetch(`http://api.weatherapi.com/v1/forecast.json?key=${KEY}&q=${city}&days=5&aqi=no&alerts=no
+  `)
     .then((res) => {
       return res.json();
     })
     .then((dataStore) => {
-
       let forecastContainer = document.querySelector(".forecast");
 
       forecastContainer.innerHTML = "";
 
       dataStore.forecast.forecastday.forEach((day) => {
-console.log(day);
         let listItem = document.createElement("li");
         let forecastTemp = document.createElement("h2");
         let forecastIcon = document.createElement("img");
         let forecastDay = document.createElement("h5");
 
-        forecastTemp.innerHTML = day.day.avgtemp_c;
+        forecastTemp.innerHTML = mathRound(day.day.avgtemp_c) + "℃";
         forecastIcon.src = day.day.condition.icon;
-        forecastDay.innerHTML = day.date;
+        forecastDay.innerHTML = formatDate(day.date);
         forecastContainer.appendChild(listItem);
-        listItem.appendChild( forecastDay);
+        listItem.appendChild(forecastDay);
         listItem.appendChild(forecastTemp);
-        listItem.appendChild( forecastIcon);
+        listItem.appendChild(forecastIcon);
       });
     });
+};
+
+function windowLoad() {
+  let long;
+  let lat;
+  window.addEventListener("load", async () => {
+    const position = await getLocation();
+    long = position.coords.longitude;
+    lat = position.coords.latitude;
+
+    APIbyLatLong(lat, long);
+    showList();
+  });
+}
+
+windowLoad();
+
+const searchButton = document.getElementById("search__button");
+const searchInput = document.getElementById("search__input");
+
+searchButton.addEventListener("click", () => {
+  const query = searchInput.value;
+  APIbyCity(query);
+});
+
+function getLocation() {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+}
+
+function addStringToArray() {
+  if (!document.querySelector(".fav__input").value) {
+    return;
+  } else if (isOkNrOfCities()) {
+    var inputString = document.querySelector(".fav__input").value;
+    var string__array =
+      JSON.parse(sessionStorage.getItem("string__array")) || [];
+
+    string__array.push(
+      inputString.charAt(0).toUpperCase() + inputString.slice(1)
+    );
+
+    sessionStorage.setItem("string__array", JSON.stringify(string__array));
+    showList();
+  }
+}
+
+function showList() {
+  var string__array = JSON.parse(sessionStorage.getItem("string__array")) || [];
+  var listElement = document.getElementById("list");
+
+  listElement.innerHTML = "";
+
+  string__array.forEach((string) => {
+    var itemContent = document.createElement("h3");
+    var listItem = document.createElement("li");
+    var delete__button = document.createElement("div");
+    delete__button.classList.add("delete__button");
+
+    listItem.classList.add("fav__list");
+    itemContent.classList.add("fav__city");
+
+    itemContent.onclick = function () {
+      APIForecast(string);
+      APIbyCity(string);
+    };
+
+    delete__button.onclick = function () {
+      let index = string__array.indexOf(string);
+
+      string__array.splice(index, 1);
+      sessionStorage.setItem("string__array", JSON.stringify(string__array));
+
+      showList();
+    };
+
+    itemContent.innerHTML = string;
+    listItem.appendChild(itemContent);
+    listItem.appendChild(delete__button);
+    listElement.appendChild(listItem);
+  });
+}
+
+function displayOnFirstRun(dataStore) {
+  document.querySelector(".temp").innerHTML =
+    JSON.stringify(dataStore.current.temp_c) + "℃";
+
+  document.querySelector(".city").innerHTML = dataStore.location.name;
+
+  document.querySelector(".icon").src = dataStore.current.condition.icon;
+
+  let cityApi = dataStore.location.name;
+
+  APIForecast(cityApi);
+}
+
+function isOkNrOfCities() {
+  if (JSON.parse(sessionStorage.getItem("string__array")) == null) {
+    return true;
+  } else {
+    return (
+      JSON.parse(sessionStorage.getItem("string__array").split(",")).length < 5
+    );
+  }
+}
+
+function changeTheme() {
+  var body = document.querySelector("body");
+  body.classList.toggle("body--dark");
+
+  var favCity;
+  if (document.querySelector(".fav__city")) {
+    favCity = document.querySelectorAll(".fav__city");
+    favCity.forEach((item) => item.classList.toggle("fav__city--dark"));
+  }
+
+  var themeTrigger = document.querySelector(".fas");
+  if (themeTrigger.classList.contains("fa-moon")) {
+    themeTrigger.classList.replace("fa-moon", "fa-sun");
+  } else {
+    themeTrigger.classList.replace("fa-sun", "fa-moon");
+  }
+}
+
+function mathRound(val) {
+  return Math.round(val);
+}
+
+function formatDate(dateString) {
+  const dateObj = new Date(dateString);
+  const month = dateObj.toLocaleString("default", { month: "long" });
+  const day = dateObj.getDate();
+  return `${day} ${month}`;
 }

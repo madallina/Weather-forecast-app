@@ -1,0 +1,83 @@
+@media only screen and (max-width: 1024px) {
+  ul {
+    gap: 20px;
+  }
+  #list {
+    flex-wrap: wrap;
+    width: 70%;
+  }
+  main .blured {
+    width: 70%;
+  }
+
+  .fav__container{
+    width: 70%;
+  }
+
+  aside {
+    height: 50px;
+    width: 50px;
+
+  }
+  .fas {
+    font-size: 25px;
+  }
+
+}
+@media only screen and (max-width: 768px) {
+  body {
+    background-color: lightblue;
+  }
+  .fav__list{
+    color:red
+  }
+  ul {
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .fav__container {
+    display: flex;
+    justify-content: center;
+  }
+
+  li {
+    font-size: 12px;
+  }
+
+  img {
+    height: 32px;
+    width: 32px;
+  }
+
+  .forecast {
+    justify-content: space-evenly;
+  }
+
+  main .blured {
+    padding: 10px;
+    margin-top: 60px;
+  }
+
+  aside {
+    height: 40px;
+    width: 40px;
+    top: 10px;
+    right: 15px;
+  }
+
+  .fas {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+    #search__input{
+        width: 160px;
+    }
+
+    .fav__input{
+        width: 160px;
+
+    }
+}
