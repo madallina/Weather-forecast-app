@@ -1,5 +1,4 @@
-# Accesa-Internship
-Repository created for internship technical test from Accesa
+
 # Introduction/Run the app
 
 I recommend to run the app with Live Server extension from VS code, 
